@@ -6,6 +6,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 const app = express();
+const serverless = require('serverless-http');
 const port = 5000;
 
 // Database variables
@@ -424,9 +425,10 @@ app.listen(port, () => {
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build/index.html'));
 });
-// app.use((req, res, next) => {
-//   res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
-// });
+
+app.use('/.netlify/functions/api', app);
+
+module.exports.handler = serverless(app);
 
 // Mongo db connection
 MongoClient.connect(mongoUrl, {
