@@ -5,9 +5,9 @@ const request = require('request-promise-native');
 let domainsArray;
 let count;
 // Timeout so server (index.js) can start
+
 setTimeout(() => {
   setDomainsArray().then((response) => {
-    console.log('hey')
     domainsArray = response;
     Object.values(domainsArray).forEach((domainObject) => {
       // console.log(domainObject);
@@ -22,8 +22,7 @@ setTimeout(() => {
       }, domainObject.checkFrequency * 1000);
     });
   });
-}, 8000);
-
+}, 20000);
 
 /**
  * setDomainsArray
@@ -34,7 +33,7 @@ function setDomainsArray() {
   return new Promise((resolve, reject) => {
     request({
       method: 'GET',
-      uri: 'http://localhost:5000/api/domains',
+      uri: 'http://localhost:9000/.netlify/functions/index/api/domains',
     }).then((results) => {
       resolve(JSON.parse(results));
     }).catch((err) => {
@@ -56,7 +55,7 @@ function setDomainsArray() {
 function check(domain, port) {
   request({
     method: 'GET',
-    uri: 'http://localhost:5000/api/check',
+    uri: 'http://localhost:9000/.netlify/functions/index/api/domains',
     body: {
       domain, port,
     },

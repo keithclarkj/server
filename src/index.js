@@ -6,8 +6,12 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 const app = express();
+const router = express.Router();
 const serverless = require('serverless-http');
-const port = 5000;
+// starts cron.js
+// const cron = require('./cron');
+// cron.cronner();
+// const port = 5000;
 
 // Database variables
 const mongoUrl = process.env.DB_URL;
@@ -19,7 +23,7 @@ app.use(express.static(path.join(__dirname, '../build')));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.setHeader(
     'Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -41,7 +45,7 @@ app.use((req, res, next) => {
  * Recieves get http requests, and when it gets one it will check domain
  * statuses.
  */
-app.get('/api/check', async (req, res) => {
+router.get('/api/check', async (req, res) => {
   console.log('Data recieved: ', req.body);
 
   // Get data from request and put into JSON for mongodb
@@ -79,7 +83,7 @@ app.get('/api/check', async (req, res) => {
  * GET/api/domains
  * Recieves get http requests and returns each domain in the database
  */
-app.get('/api/domains', (req, res) => {
+router.get('/api/domains', (req, res) => {
   console.log('Request recieved, attempting to sending all domains.');
   // variable to store array fetched from database
 
@@ -110,7 +114,7 @@ app.get('/api/domains', (req, res) => {
  * POST/api/statuses
  * Recieves post http requests and returns all statuses for the domain specified
  */
-app.post('/api/statuses', (req, res) => {
+router.post('/api/statuses', (req, res) => {
   /**
    * Function required to return promise so database searches dont happen
    * before domain and port params are resolved
@@ -155,7 +159,7 @@ app.post('/api/statuses', (req, res) => {
  * Recieves post http requests that should contain a domain to insert
  * into the database.
  */
-app.post('/api/insert', (req, res) => {
+router.post('/api/insert', (req, res) => {
   console.log('Data recieved: ', req.body);
 
   // Get data from request and put into JSON for mongodb
@@ -192,7 +196,7 @@ app.post('/api/insert', (req, res) => {
  * Recieves delete http requests that should contain a domain and port to delete
  * from the domains and statuses collection of the database
  */
-app.delete('/api/removeDomain', (req, res) => {
+router.delete('/api/removeDomain', (req, res) => {
   console.log('Data recieved: ', req.body);
   // console.log(req);
 
@@ -413,20 +417,20 @@ function insertStatus(domain, port, statusCode) {
 }
 
 // Starts the server and listens for connections on port 3000
-app.listen(port, () => {
-  console.log('Uptime application is listening at http://localhost:5000');
-});
+// app.listen(port, () => {
+//   console.log('Uptime application is listening at http://localhost:5000');
+// });
 
 /**
  * Catch all
  * If there are any URLs requested that don't exist, the following code will
  * execute.
  */
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build/index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'build/index.html'));
+// });
 
-app.use('/.netlify/functions/api', app);
+app.use('/.netlify/functions/index', router);
 
 module.exports.handler = serverless(app);
 

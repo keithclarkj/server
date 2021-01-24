@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
-    "start": "./node_modules/.bin/netlify-lambda serve src"
+    "start": "concurrently \"node cron.js\" \"npm run start2\"",
+    "start2": "./node_modules/.bin/netlify-lambda serve src",
+    "build2": "./node_modules/.bin/netlify-lambda build src",
+    "build": "concurrently \"node cron.js\" \"npm run build2\""
   },
   "author": "",
   "license": "ISC",
