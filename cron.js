@@ -33,7 +33,7 @@ function setDomainsArray() {
   return new Promise((resolve, reject) => {
     request({
       method: 'GET',
-      uri: 'http://localhost:9000/.netlify/functions/index/api/domains',
+      uri: 'http://uptimerobotserver.netlify.app/.netlify/functions/index/api/domains',
     }).then((results) => {
       resolve(JSON.parse(results));
     }).catch((err) => {
@@ -55,7 +55,7 @@ function setDomainsArray() {
 function check(domain, port) {
   request({
     method: 'GET',
-    uri: 'http://localhost:9000/.netlify/functions/index/api/domains',
+    uri: 'http://uptimerobotserver.netlify.app/.netlify/functions/index/api/domains',
     body: {
       domain, port,
     },
