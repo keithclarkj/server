@@ -22,6 +22,7 @@
     "mysql": "^2.18.1",
     "netlify-lambda": "^2.0.3",
     "request": "^2.88.2",
-    "request-promise-native": "^1.0.9"
+    "request-promise-native": "^1.0.9",
+    "serverless-http": "^2.7.0"
   }
 }
