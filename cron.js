@@ -22,7 +22,7 @@ setTimeout(() => {
       }, domainObject.checkFrequency * 1000);
     });
   });
-}, 20000);
+}, 50000);
 
 /**
  * setDomainsArray
