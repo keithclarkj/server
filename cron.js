@@ -61,6 +61,7 @@ function check(domain, port) {
     },
     json: true,
   }).then((response) => {
+    console.log(response);
   }).catch((err) => {
   });
 }
